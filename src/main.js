@@ -26,13 +26,22 @@ const cubeTextureLoader = new THREE.CubeTextureLoader();
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 const pointLight = new THREE.PointLight(0xffffff, 500, 300);
-pointLight.position.set(0, 20, 0)
+pointLight.position.set(0, 20, 0);
 scene.add(pointLight);
 
 // Camera positioning
 camera.position.set(0, 14, 14);
+// ----------------------------------
 
-const planeGeometry = new THREE.PlaneGeometry(100, 100);
+// Scene nackground
+const skybox = textureLoader.load("/sky_67/sky_67_2k.png", (skyTexture) => {
+  skyTexture.mapping = THREE.EquirectangularReflectionMapping;
+
+  scene.background = skyTexture;
+});
+
+const circleGeometry = new THREE.CircleGeometry(5000, 1000)
+const planeGeometry = new THREE.PlaneGeometry(10000, 10000);
 const plainGrayMaterial = new THREE.MeshStandardMaterial({
   color: "gray",
   side: THREE.DoubleSide,
@@ -41,15 +50,32 @@ const plainGreenMaterial = new THREE.MeshStandardMaterial({
   color: "green",
   side: THREE.DoubleSide,
 });
-const plane = new THREE.Mesh(planeGeometry, plainGrayMaterial);
+const plane = new THREE.Mesh(circleGeometry, plainGrayMaterial);
 plane.rotation.x = -0.5 * Math.PI;
 scene.add(plane);
 
-const boxGeometry = new THREE.BoxGeometry(5, 5, 5);
+const boxGeometry = new THREE.BoxGeometry(5, 5, 5, 2, 2, 2);
 const box = new THREE.Mesh(boxGeometry, plainGreenMaterial);
 plane.rotation.x = -0.5 * Math.PI;
 box.position.set(0, 5, 0);
 scene.add(box);
+
+const boxFrameGeometry = new THREE.WireframeGeometry(boxGeometry);
+const redLineMaterial = new THREE.LineBasicMaterial({
+  color: "red",
+  linewidth: 1,
+});
+
+function addLineSegments(geometry) {
+  const segmentMaterial = new THREE.LineBasicMaterial({
+    color: "yellow",
+    linewidth: 1,
+  });
+   return new THREE.LineSegments(geometry, segmentMaterial)
+}
+
+const boxFrames = addLineSegments(boxFrameGeometry);
+box.add(boxFrames);
 
 // Add Orbit Controls
 const orbitControls = new OrbitControls(camera, renderer.domElement);
