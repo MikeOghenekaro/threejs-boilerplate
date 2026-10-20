@@ -5,9 +5,24 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>three-boiler</title>
+    <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
     <div id="app"></div>
+    <div class="controlPanel">
+      <div class="directionalControls">
+        <div class="forward" id="forward">
+          <button>^</button>
+        </div>
+        <div class="leftToRight" id="leftToRight">
+          <button id="left"><</button>
+          <button id="right">></button>
+        </div>
+        <div class="backward" id="backward">
+          <button>v</button>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
