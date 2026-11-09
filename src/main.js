@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Stats from "three/addons/libs/stats.module.js";
+import { FirstPersonControls } from "three/examples/jsm/Addons.js";
 
 // Scene, camera, render------------------------------------------------------------------------------------------------
 
@@ -94,13 +95,16 @@ scene.add(capsule);
 // Add Orbit Controls
 const orbitControls = new OrbitControls(camera, renderer.domElement);
 orbitControls.update();
-
-camera;
+orbitControls.autoRotate = true;
+orbitControls.autoRotateSpeed = 0.2;
+orbitControls.target = capsule.position;
+orbitControls.enableDamping = true;
 
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
 function animate() {
+  orbitControls.update();
   renderer.render(scene, camera);
 }
 
@@ -114,17 +118,17 @@ window.addEventListener("resize", function () {
 
 // capsule controls
 document.getElementById("backward").addEventListener("click", function () {
-  capsule.position.z += 0.5;
+  capsule.position.z += 1;
 });
 
 document.getElementById("forward").addEventListener("click", function () {
-  capsule.position.z -= 0.5;
+  capsule.position.z -= 1;
 });
 
 document.getElementById("left").addEventListener("click", function () {
-  capsule.position.x -= 0.5;
+  capsule.position.x -= 1;
 });
 
 document.getElementById("right").addEventListener("click", function () {
-  capsule.position.x += 0.5;
+  capsule.position.x += 1;
 });
